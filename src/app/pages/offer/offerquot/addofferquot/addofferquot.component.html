@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+      <nb-card-header>اضافة او تعديل باقات التوفير</nb-card-header>
+      <nb-card-body>
+        <toaster-container [toasterconfig]="config"></toaster-container>
+        <form #form="ngForm">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="inputPassword4">اختر الشركة</label>
+              <div class="input-group">
+                <ng-select name="aa" [dropdownPosition]="'bottom'"  class="form-control" [items]="suppliers" bindLabel="name" bindValue="_id"
+                  placeholder="اختر الشركة" [(ngModel)]="selected_supplier_id" #selectedSupplier="ngModel" (change)="SupplierChanging($event)"
+                  required>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="inputEmail4">المنتج</label>
+              <ng-select name="dd" [dropdownPosition]="'bottom'"  [items]="products" bindLabel="product_id.name" dropdownPosition='top'
+              bindValue="_id" placeholder="اختر المنتج " [(ngModel)]="selected_product_id"
+              #selectedproductid="ngModel" (change)="ProductChanging($event)" required [disabled]="!selectedSupplier">
+            </ng-select>
+            </div>
+          </div>
+          <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail4">الكمية</label>
+                <input type="number" min=0 placeholder="الكمية" style="height: 35px;" class="form-control" #qtyCount="ngModel"
+                  [(ngModel)]="offerObj.qty" [ngClass]="(qtyCount.invalid && (qtyCount.dirty || qtyCount.touched))?'form-control form-control-danger':'form-control'"
+                  name="qtyCount" id="qtyCount" required />
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputEmail4">السعر</label>
+                <input type="number" min=0 placeholder="السعر" style="height: 35px;" class="form-control" #priceCount="ngModel"
+                  [(ngModel)]="offerObj.new_price" [ngClass]="(priceCount.invalid && (priceCount.dirty || priceCount.touched))?'form-control form-control-danger':'form-control'"
+                  name="priceCount" id="priceCount" required />
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="inputEmail4"></label>
+            <button [disabled]="(!form.valid && !isEdit)" class="btn btn-success btn-round btn-demo"
+            (click)="Save(offerObj)"> حفظ المعلومات </button>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

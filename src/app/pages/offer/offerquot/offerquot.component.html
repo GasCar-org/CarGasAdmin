@@ -1,0 +1,52 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+
+  <nb-card-header>
+    منتجات باقات التوفير
+    <a style="float: left;" alt='اضافة منتج الى باقات التوفير' class="btn btn-success btn-icon"
+      routerLink="/pages/offer/addoffer">
+      <i class="nb-plus"></i>
+    </a>
+  </nb-card-header>
+  <nb-card-body>
+    <toaster-container [toasterconfig]="config"></toaster-container>
+    <input type='text' style='padding:8px;margin:15px auto;width:40%;' placeholder="ابحث باسم المنتج"
+      (keydown)='updateFilter($event)' />
+    <ngx-datatable class="material" [rows]="rows" [columnMode]="'force'" [sortType]="'multi'" [headerHeight]="50"
+      [footerHeight]="50" [rowHeight]="60" [loadingIndicator]="isLoading" [scrollbarH]="false" [scrollbarV]="false"
+      [virtualization]="false" [reorderable]="false" [externalPaging]="true" [count]="page.totalElements"
+      [offset]="page.pageNumber" [limit]="page.size" (page)='setPage($event)'>
+
+      <ngx-datatable-column prop="product_id.product_id.image" name="الصورة">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <img class="img-corner" src="{{value}}" width="48" height="48">
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column prop="product_id.product_id.name" name="اسم المنتج">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <span>{{value}} </span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column prop="supplier_id.name" name="اسم الشركة">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <span>{{value}} </span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column prop="qty" name="الكمية"></ngx-datatable-column>
+      <ngx-datatable-column prop="new_price" name="السعر"></ngx-datatable-column>
+      <ngx-datatable-column name="الاجراءات">
+        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+          <button md-icon-button class="custom-icon" (click)="EditRow(value)">
+            <i class="fa fa-edit"></i>
+          </button>
+
+          <button md-icon-button class="custom-icon del-icon" (click)="deleteRow(value)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </ng-template>
+      </ngx-datatable-column>
+
+    </ngx-datatable>
+  </nb-card-body>
+</nb-card>

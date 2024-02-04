@@ -1,0 +1,126 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+      <nb-card-header>اضافة او تعديل منتج</nb-card-header>
+      <nb-card-body>
+        <toaster-container [toasterconfig]="config"></toaster-container>
+        <form #form="ngForm">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputEmail4">اسم المنتج</label>
+              <input type="text" placeholder="اسم المنتج" class="form-control" #name="ngModel"
+                [(ngModel)]="product.name"
+                [ngClass]="(name.invalid && (name.dirty || name.touched))?'form-control form-control-danger':'form-control'"
+                name="name" id="name" required />
+            </div>
+            <div class="form-group col-md-6">
+              <label>الضمان</label>
+              <div class="input-group">
+                <input type="text" placeholder="الضمان" class="form-control" #warrenty="ngModel"
+                  [(ngModel)]="product.warrenty" name="warrenty" id="warrenty" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>التصنيف </label>
+              <div class="input-group">
+                <ng-select name="xx" class="form-control" [dropdownPosition]="'bottom'" [items]="cateogires"
+                  bindLabel="name" bindValue="_id" placeholder="اختر التصنيف الرئيسي" [(ngModel)]="selected_category_id"
+                  #selectedcategoryid="ngModel" (change)="CategoryChanging($event)" required>
+                </ng-select>
+              </div>
+            </div>
+            <div class="form-group col-md-3">
+              <label>سعر التبديل </label>
+              <div class="input-group">
+                <input type="number" placeholder="سعر التبديل" class="form-control" #price="ngModel"
+                  [(ngModel)]="product.price" name="price" id="price" required />
+              </div>
+            </div>
+            <div class="form-group col-md-3">
+              <label>سعر الشراء </label>
+              <div class="input-group">
+                <input type="number" placeholder="سعر الشراء" class="form-control" #price_buy_new="ngModel"
+                  [(ngModel)]="product.price_buy_new" name="price_buy_new" id="price_buy_new" required />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputEmail4">التقييم</label>
+              <input type="number" min=0 readonly placeholder="التقييم" class="form-control" #rate="ngModel"
+                [(ngModel)]="product.rate"
+                [ngClass]="(rate.invalid && (rate.dirty || rate.touched))?'form-control form-control-danger':'form-control'"
+                name="rate" id="rate" />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputEmail4">الترتيب</label>
+              <input type="number" min="1" placeholder="الترتيب" class="form-control" #isSort="ngModel"
+                [(ngModel)]="product.isSort"
+                [ngClass]="(isSort.invalid && (isSort.dirty || isSort.touched))?'form-control form-control-danger':'form-control'"
+                name="isSort" id="isSort" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="inputEmail4">الحالة</label>
+              <nb-checkbox [value]="product.isNewProduct" name="isNewProduct" (change)="onChangeNew(product)"
+                status="success" class="col-sm-4">منتج جديد
+              </nb-checkbox>
+              <nb-checkbox [value]="product.isReplacement" name="isReplacement" (change)="onChangeRep(product)"
+                status="success" class="col-sm-4">
+                قابل للتبديل
+              </nb-checkbox>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label>نبذة عن المنتج</label>
+            <div class="input-group">
+              <textarea rows="5" placeholder="نبذة عن المنتج" class="form-control" #description="ngModel"
+                [(ngModel)]="product.description" name="description" id="description"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>صورة المنتج</label>
+            <div>
+              <div id="fileSelector">
+                <input type="file" placeholder="ادخل عنوان الصنف" id="fileUpload" ng2FileSelect [uploader]="uploader"
+                  [ngClass]="(name.invalid && (name.dirty || name.touched))?'form-control form-control-danger':'form-control'">
+              </div>
+              <div class="form-group">
+                <label>الصور</label>
+                <div>
+                  <div class="row uploadList" *ngFor="let item of uploader.queue">
+                    <div class="col-sm-4">{{item.file.name}}</div>
+                    <div class="col-sm-4">
+                      <div class="progress">
+                        <div class="progress-bar bg-success" [ngStyle]="{'width':item.progress+'%'}"></div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4" style="margin-top: -14px;">
+                      <button type="button" class="btn btn-danger" (click)="item.remove()">حذف</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="uploader?.queue?.length > 0 || isEdit">
+                <button [disabled]="!form.valid && !isEdit" class="btn btn-success btn-round btn-demo"
+                  (click)="Save(product);">حفظ
+                  المعلومات
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

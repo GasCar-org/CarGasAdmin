@@ -1,0 +1,56 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+  <nb-card-header>
+    <h3> تتبع الطلبات على الخريطة</h3>
+    <br>
+    <div class="form-group">
+      <label class="txt1">رقم الطلب:</label>
+      <label class="txt2">{{postData._id}}</label>
+    </div>
+    <div class="form-group">
+      <label class="txt1">اسم العميل:</label>
+      <label class="txt2">{{postData.user_id.full_name}}</label>
+    </div>
+    <div class="form-group">
+      <label class="txt1">رقم الجوال:</label>
+      <label class="txt2">{{postData.user_id.phone_number}}</label>
+    </div>
+    <div class="form-group">
+      <label class="txt1">العنوان:</label>
+      <label class="txt2">{{postData.addressDetails}}</label>
+    </div>
+    <div class="form-group">
+      <label class="txt1">اسم السائق:</label>
+      <label class="txt2">{{postData.driver_name}}</label>
+    </div>
+    <div class="form-group">
+      <label class="txt1">رقم جوال السائق:</label>
+      <label class="txt2">{{postData.driver_phone}}</label>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <agm-map *ngIf="isVisible" [zoomControl]="true" [latitude]="markerDriver.lat" [longitude]="markerDriver.lng" [zoom]="zoom"
+      [fullscreenControl]="true" [fullscreenControlOptions]="true" [disableDefaultUI]="false" [zoomControl]="false">
+      <!-- <agm-direction [origin]="origin" [destination]="destination">
+          </agm-direction> -->
+
+      <agm-marker (markerClick)="clickedMarkerDriver(markerDriver.label)" [latitude]="markerDriver.lat" [longitude]="markerDriver.lng">
+        <agm-info-window>
+          <strong>
+            <br>
+            {{labelDriver}}
+          </strong>
+        </agm-info-window>
+      </agm-marker>
+
+      <agm-marker (markerClick)="clickedMarker(markerClient.label)" [latitude]="markerClient.lat" [longitude]="markerClient.lng">
+        <agm-info-window>
+          <strong>
+            <br>
+            {{labelClient}}
+          </strong>
+        </agm-info-window>
+      </agm-marker>
+
+    </agm-map>
+  </nb-card-body>
+</nb-card>

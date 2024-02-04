@@ -1,0 +1,23 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+  <nb-card-header>
+    <h3>التوزيع الجغرافي للسائقين</h3>
+    <br>
+  </nb-card-header>
+  <nb-card-body>
+    <agm-map *ngIf="isVisible" [zoomControl]="true" [latitude]="lat" [longitude]="lng" [zoom]="zoom"
+      [fullscreenControl]="true" [fullscreenControlOptions]="true" [disableDefaultUI]="false" [zoomControl]="false">
+      <!-- <agm-direction [origin]="origin" [destination]="destination">
+        </agm-direction> -->
+      <agm-marker *ngFor="let m of locations_marker; let i = index" (markerClick)="clickedMarker(m.label, i)"
+        [latitude]="m.lat" [longitude]="m.lng">
+        <agm-info-window>
+          <br>
+          <strong>اسم السائق: {{m.name}}</strong>
+          <br>
+          <strong>رقم الجوال: {{m.phone}}</strong>
+          <br>
+        </agm-info-window>
+      </agm-marker>
+    </agm-map>
+  </nb-card-body>
+</nb-card>

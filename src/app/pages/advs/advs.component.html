@@ -1,0 +1,109 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+      <nb-card-header>اضافة او تعديل الاعلان</nb-card-header>
+      <nb-card-body>
+        <toaster-container [toasterconfig]="config"></toaster-container>
+        <form #form="ngForm">
+          <!-- <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="inputPassword4">نوع الاعلان</label>
+              <select  class="form-control" id="selectedValue" name="selectedValue" #Type="ngModel" [(ngModel)]="selectedValue" (change)="onChange($event.target.value)">
+                <option value="0" selected=true>-- اختر نوع الاعلان -- </option>
+                <option value="1">اعلان منتج</option>
+                <option value="2"> اعلان هايبر</option>
+                <option value="3">اعلان عام</option>
+              </select>
+            </div>
+          </div> -->
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="inputEmail4">اسم الاعلان</label>
+              <input type="text" placeholder="اسم الاعلان" class="form-control" #name="ngModel" [(ngModel)]="Adv.name"
+                [ngClass]="(name.invalid && (name.dirty || name.touched))?'form-control form-control-danger':'form-control'"
+                name="name" id="name" required />
+            </div>
+          </div>
+          <!-- <div class="form-row" *ngIf="Type.value == 2 || Type.value == 1">
+            <div class="form-group col-md-12">
+              <label for="inputEmail4">اسم الشركة</label>
+              <ng-select name="aa" [dropdownPosition]="'bottom'"  [items]="suppliers" bindLabel="name" bindValue="_id"
+              placeholder="اختر الشركة" [(ngModel)]="selected_supplier_id" #selectedSupplier="ngModel" (change)="SupplierChanging($event)">
+            </ng-select>
+            </div>
+          </div>
+          <div class="form-row" *ngIf="Type.value == 1">
+            <div class="form-group col-md-12">
+              <label for="inputEmail4">المنتج</label>
+              <ng-select name="dd" [dropdownPosition]="'bottom'"  [items]="products" bindLabel="product_id.name" dropdownPosition='top'
+              bindValue="product_id._id" placeholder="اختر المنتج " [(ngModel)]="selected_product_id"
+              #selectedproductid="ngModel" (change)="ProductChanging($event)">
+            </ng-select>
+            </div>
+          </div> -->
+          <div class="form-group">
+            <label>نبذة عن الاعلان</label>
+            <div class="input-group">
+              <textarea rows="5" placeholder="نبذة عن الاعلان" class="form-control" #details="ngModel" [(ngModel)]="Adv.details"
+                name="details" id="details"></textarea>
+            </div>
+          </div>
+          <!-- <div class="form-row" *ngIf="Type.value == 1">
+            <div class="form-group col-md-6">
+              <label for="inputEmail4">السعر قبل</label>
+              <input type="number" min=0 placeholder="السعر قبل" class="form-control" #price_before="ngModel"
+                [(ngModel)]="Adv.price_before" [ngClass]="(price_before.invalid && (price_before.dirty || price_before.touched))?'form-control form-control-danger':'form-control'"
+                name="price_before" id="price_before" required />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputEmail4">السعر بعد</label>
+              <input type="number" min=0  placeholder="السعر بعد" class="form-control" #price_after="ngModel"
+                [(ngModel)]="Adv.price_after" [ngClass]="(price_after.invalid && (price_after.dirty || price_after.touched))?'form-control form-control-danger':'form-control'"
+                name="price_after" id="price_after" required />
+            </div>
+          </div> -->
+          <div class="form-group">
+            <label>صورة الاعلان</label>
+            <div>
+              <div id="fileSelector">
+                <input type="file" #fileUpload placeholder="ادخل صورة الاعلان" id="fileUpload" ng2FileSelect [uploader]="uploader"
+                  [ngClass]="(name.invalid && (name.dirty || name.touched))?'form-control form-control-danger':'form-control'">
+              </div>
+              <div class="form-group">
+                <label>الصور</label>
+                <div>
+                  <div class="row uploadList" *ngFor="let item of uploader.queue">
+                    <div class="col-sm-4">{{item.file.name}}</div>
+                    <div class="col-sm-4">
+                      <div class="progress">
+                        <div class="progress-bar bg-success" [ngStyle]="{'width':item.progress+'%'}"></div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4" style="margin-top: -14px;">
+                      <button type="button" class="btn btn-danger" (click)="item.remove(); uploader?.clearQueue(); resetfile();">حذف</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" *ngIf="uploader?.queue?.length > 0">
+              </div>
+            </div>
+          </div>
+          <div>
+            <button [disabled]="!form.valid && !isEdit" class="btn btn-success btn-round btn-demo" (click)="Save(Adv);">حفظ
+              المعلومات</button>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<nb-card>
+  <nb-card-header>
+    ادارة الاعــلانــات
+  </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="onUserRowSelect($event)" (deleteConfirm)="onDeleteConfirm($event)"></ng2-smart-table>
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,130 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+      <nb-card-header>اضافة او تعديل السلات الجاهزة</nb-card-header>
+      <nb-card-body>
+        <toaster-container [toasterconfig]="config"></toaster-container>
+        <form #form="ngForm">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputPassword4">اسم السلة</label>
+              <div class="input-group">
+                <input type="text" placeholder="اسم السلة" class="form-control" #name="ngModel" [(ngModel)]="basket.name"
+                  [ngClass]="(name.invalid && (name.dirty || name.touched))?'form-control form-control-danger':'form-control'"
+                  name="name" id="name" required />
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="inputPassword4">سعر السلة</label>
+              <div class="input-group">
+                <input type="number" min=0 placeholder="اسم السلة" class="form-control" #price="ngModel" [(ngModel)]="basket.price"
+                  [ngClass]="(price.invalid && (price.dirty || price.touched))?'form-control form-control-danger':'form-control'"
+                  name="price" id="price" required />
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label>صورة السلة</label>
+              <div>
+                <div id="fileSelector">
+                  <input type="file" #fileUpload placeholder="ادخل صورة السلة" id="fileUpload" ng2FileSelect [uploader]="uploader"
+                    [ngClass]="(fileUpload.invalid && (fileUpload.dirty || fileUpload.touched))?'form-control form-control-danger':'form-control'">
+                </div>
+                <div class="form-group col-md-12">
+                  <label>الصور</label>
+                  <div>
+                    <div class="row uploadList" *ngFor="let item of uploader.queue">
+                      <div class="col-sm-4">{{item.file.name}}</div>
+                      <div class="col-sm-4">
+                        <div class="progress">
+                          <div class="progress-bar bg-success" [ngStyle]="{'width':item.progress+'%'}"></div>
+                        </div>
+                      </div>
+                      <div class="col-sm-4" style="margin-top: -14px;">
+                        <button type="button" class="btn btn-danger" (click)="item.remove(); uploader?.clearQueue(); resetfile();">حذف</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" *ngIf="uploader?.queue?.length > 0">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="inputPassword4">اختر الشركة</label>
+              <div class="input-group">
+                <ng-select name="aa" [dropdownPosition]="'bottom'"  class="form-control" [items]="suppliers" bindLabel="name" bindValue="_id"
+                  placeholder="اختر الشركة" [(ngModel)]="selected_supplier_id" #selectedcategoryid="ngModel" (change)="SupplierChanging($event)"
+                  required>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>التصنيف الرئيسي</label>
+              <div class="input-group">
+                <ng-select name="xx" [dropdownPosition]="'bottom'"  class="form-control" [items]="cateogires" bindLabel="name" bindValue="_id"
+                  placeholder="اختر التصنيف الرئيسي" [(ngModel)]="selected_category_id" #selectedcategoryid="ngModel"
+                  [disabled]="!selected_supplier_id" (change)="CategoryChanging($event)" required>
+                </ng-select>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label>التصنيف الفرعي</label>
+              <div class="input-group">
+                <ng-select name="yy" [dropdownPosition]="'bottom'"  class="form-control" [items]="sub_cateogires" bindLabel="name"
+                  bindValue="_id" placeholder="اختر التصنيف الفرعي" [(ngModel)]="selected_sub_category_id"
+                  #selectedsubcategoryid="ngModel" (change)="SubCategoryChanging($event)" required [disabled]="!selected_category_id">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="form-row" >
+            <div class="form-group col-md-8">
+              <label for="inputEmail4">المنتج</label>
+              <ng-select name="dd" [dropdownPosition]="'bottom'"  [items]="products" bindLabel="product_id.name" dropdownPosition='top'
+                bindValue="product_id._id" placeholder="اختر المنتج " [(ngModel)]="selected_product_id"
+                #selectedproductid="ngModel" (change)="ProductChanging($event)" required [disabled]="!selected_sub_category_id">
+              </ng-select>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="inputEmail4">الكمية</label>
+              <input type="number" min=0 placeholder="الكمية" style="height: 35px;" class="form-control" #qtyCount="ngModel" [(ngModel)]="qty"
+                [ngClass]="(qtyCount.invalid && (qtyCount.dirty || qtyCount.touched))?'form-control form-control-danger':'form-control'"
+                name="qtyCount" id="qtyCount" required />
+            </div>
+            <div class="form-group col-md-1">
+              <label for="inputEmail4"></label>
+              <button class="btn btn-success btn-icon" style="margin-top: 3px;" (click)="tempAdd(qty)" [disabled]="!selected_product_id || qtyCount.value === ''">
+                <i class="nb-plus"></i>
+              </button>
+              
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+
+<nb-card>
+  <nb-card-header>
+    منتجات السلة
+  </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)"></ng2-smart-table>
+    <div class="form-row">
+      <button *ngIf="!isEdit" [disabled]="(!form.valid  || basket.products.length === 0)" class="btn btn-success btn-round btn-demo"
+        (click)="Save(basket)">حفظ المعلومات</button>
+
+      <button *ngIf="isEdit" [disabled]="(basket.products.length === 0)" class="btn btn-success btn-round btn-demo"
+      (click)="Save(basket)"> تعديل السلة </button>
+    </div>
+  </nb-card-body>
+</nb-card>

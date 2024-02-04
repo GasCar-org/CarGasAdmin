@@ -1,0 +1,8 @@
+<nb-card>
+  <nb-card-header>
+    خيــارات ما بعد الشــراء
+  </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source"  (createConfirm)="onCreate($event)" (editConfirm)="onEdit($event)" (deleteConfirm)="onDeleteConfirm($event)"></ng2-smart-table>
+  </nb-card-body>
+</nb-card>  

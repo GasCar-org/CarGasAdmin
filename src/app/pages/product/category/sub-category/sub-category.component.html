@@ -1,0 +1,43 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+    <nb-card-header>
+        اضافة او تعديل الأصناف الفرعية
+    </nb-card-header>
+    <nb-card-body>
+
+        <toaster-container [toasterconfig]="config"></toaster-container>
+        <form #form="ngForm">
+            <div class="form-group">
+                <label>اختر التصنيف الرئيسي </label>
+                <div class="input-group">
+                    <ng-select name="xx" [dropdownPosition]="'bottom'"  class="form-control" [items]="cateogires" bindLabel="name" bindValue="_id" placeholder="اختر التصنيف"
+                        [(ngModel)]="selected_category_id" #selectedcategoryid="ngModel" (change)="ChangingValue($event)" required>
+                    </ng-select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>عنوان التصنيف الفرعي</label>
+                <div class="input-group">
+                    <input type="text" #name="ngModel" [(ngModel)]="sub_category.name" placeholder="ادخل عنوان التصنيف الفرعي"
+                        [ngClass]="(name.invalid && (name.dirty || name.touched))?'form-control form-control-danger':'form-control'"
+                        name="name" id="name" required />
+                </div>
+            </div>
+            <div>
+                <button [disabled]="!form.valid && !isEdit" class="btn btn-success btn-round btn-demo" (click)="Save(sub_category);">حفظ
+                    المعلومات</button>
+            </div>
+        </form>
+    </nb-card-body>
+</nb-card>
+
+
+<nb-card>
+    <nb-card-header>
+        ادارة الأصنـاف الفـرعية
+    </nb-card-header>
+    <nb-card-body>
+        <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="onUserRowSelect($event)"
+            (deleteConfirm)="onDeleteConfirm($event)"></ng2-smart-table>
+    </nb-card-body>
+</nb-card>

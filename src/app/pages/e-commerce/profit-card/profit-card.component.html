@@ -1,0 +1,32 @@
+<nb-flip-card [showToggleButton]="false" [flipped]="flipped">
+  <nb-card-front>
+    <nb-card>
+      <nb-card-header class='custom-title'>
+        <span class='txt'>أهم الاحصائيات الرقمية </span>
+        <i class="nb-arrow nb-arrow-left" (click)="toggleFlipView()"></i>
+      </nb-card-header>
+      <nb-card-body>
+        <ngx-charts-pie-grid class="chart-container" [view]="view" [scheme]="colorScheme"
+          (legendLabelClick)="onLegendLabelClick($event)" [results]="single" [animations]="true"
+          [tooltipDisabled]="true" [tooltipText]="pieTooltipText" (select)="select($event)">
+        </ngx-charts-pie-grid>
+      </nb-card-body>
+    </nb-card>
+  </nb-card-front>
+  <nb-card-back>
+    <nb-card>
+      <nb-card-header class='custom-title'>
+        <span class='txt'>المدن الأكثر طلبا</span>
+        <i class="nb-arrow nb-arrow-left" (click)="toggleFlipView()"></i>
+      </nb-card-header>
+      <nb-card-body>
+        <ngx-charts-pie-chart class="chart-container" [view]="view2" [scheme]="colorScheme2" [results]="single2"
+          [animations]="true" [legend]="true" [legendTitle]="'المعرف'" [explodeSlices]="false" [labels]="true"
+          [doughnut]="false" [arcWidth]="0.25" (legendLabelClick)="onLegendLabelClick2($event)" [gradient]="true"
+          [tooltipDisabled]="false" [tooltipText]="pieTooltipText2" (dblclick)="dblclick($event)"
+          (select)="select2($event)">
+        </ngx-charts-pie-chart>
+      </nb-card-body>
+    </nb-card>
+  </nb-card-back>
+</nb-flip-card>

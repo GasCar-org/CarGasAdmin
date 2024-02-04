@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>ارسال الرسائل والاشعارات</nb-card-header>
+      <nb-card-body>
+        <toaster-container [toasterconfig]="config"></toaster-container>
+        <form #form="ngForm">
+
+          <div class="form-group">
+            <label>اختر الفئة</label>
+            <select name="bb" class="form-control" #category (change)="selectCategory($event.target.value)">
+              <option value="-1">-- اختر الفئة --</option>
+              <option value="0">-- كل المستخدمين --</option>
+              <option value="1">-- كل السائقين --</option>
+              <option value="2">-- بعض السائقين --</option>
+            </select>
+          </div>
+
+          <!-- <div class="form-group" *ngIf="category.value==0">
+            <label>اختر المدينة</label>
+            <select name="aa" class="form-control" #city (change)="selectCity($event.target.value)">
+              <option value="0">-- كل المدن --</option>
+              <option *ngFor="let item of cities" [value]="item._id">{{item.name}}</option>
+            </select>
+          </div> -->
+
+
+          <div class="form-group" *ngIf="category.value==2">
+            <label>اختر السائق</label>
+            <ng-select name="aa" [items]="Drivers" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+              bindLabel="name" placeholder="اختر السائق" [dropdownPosition]="'bottom'" [(ngModel)]="selectedDrivers">
+            </ng-select>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" #fullName="ngModel" [(ngModel)]="msg.title" placeholder="عنوان الاشعار او الرسالة"
+                [ngClass]="(fullName.invalid && (fullName.dirty || fullName.touched))?'form-control form-control-danger':'form-control'"
+                name="fullName" id="fullName" required />
+            </div>
+            <div class="input-group">
+              <textarea #email="ngModel" rows=5 [(ngModel)]="msg.body" placeholder="نص الرسالة"
+                [ngClass]="(email.invalid && (email.dirty || email.touched))?'form-control form-control-danger':'form-control'"
+                name="email" id="email" required></textarea>
+            </div>
+          </div>
+          <div>
+            <button [disabled]="!form.valid || category.value==-1" class="btn btn-success btn-round btn-demo"
+              (click)="Save(msg)">ارسال</button>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

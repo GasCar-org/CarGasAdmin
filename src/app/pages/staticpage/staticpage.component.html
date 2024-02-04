@@ -1,0 +1,36 @@
+<nb-card>
+    <nb-card-header>
+        اضافة او تعديل الصفحات الثابتة
+    </nb-card-header>
+    <nb-card-body>
+        <form #form="ngForm">
+            <div class="form-group">
+                <label>عنوان الصفحة</label>
+                <div class="input-group">
+                    <input type="text" #title="ngModel" [(ngModel)]="staticpage.title" placeholder="ادخل عنوان الصفحة"
+                        [ngClass]="(title.invalid && (title.dirty || title.touched))?'form-control form-control-danger':'form-control'"
+                        name="title" id="title" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>محتوى الصفحة</label>
+                <ckeditor #content="ngModel" [(ngModel)]="staticpage.content" name="content" id="content" [config]="{ extraPlugins: 'divarea', height: '250' }"></ckeditor>
+            </div>
+            <div>
+                <button [disabled]="!form.valid" class="btn btn-success btn-round btn-demo" (click)="Save(staticpage)">حفظ
+                    المعلومات</button>
+            </div>
+        </form>
+    </nb-card-body>
+</nb-card>
+
+
+<nb-card>
+    <nb-card-header>
+        ادارة الصفحات الثابتة
+    </nb-card-header>
+    <nb-card-body>
+        <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="onUserRowSelect($event)"
+            (deleteConfirm)="onDeleteConfirm($event)"></ng2-smart-table>
+    </nb-card-body>
+</nb-card>

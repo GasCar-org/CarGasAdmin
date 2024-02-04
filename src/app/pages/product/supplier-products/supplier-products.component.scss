@@ -1,0 +1,48 @@
+table {
+    width: 100%;
+}
+  
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+ }
+.custom-icon {
+    border: 1px solid #5dcfe3;
+    color: #5dcfe3;
+    transition: all 0.25s;
+    border-radius: 50%;
+    background-color: #fff;
+    width: 30px;
+    height: 30px;
+    margin: 0 3px;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 12px;
+    padding: 0;
+    &.del-icon {
+        border-color: #ff0000;
+        color: #ff0000;
+        &:hover {
+            background-color: #ff0000;
+            border-color: #ff0000;
+            color: #fff;
+        }
+    }
+    &.info-icon {
+        border-color: #e8873f;
+        color: #e8873f;
+        &:hover {
+            background-color: #e8873f;
+            border-color: #e8873f;
+            color: #fff;
+        }
+    }
+    &:hover {
+        background-color: #5dcfe3;
+        border-color: #5dcfe3;
+        color: #fff;
+    }
+    &:focus {
+        outline: none;
+    }
+}

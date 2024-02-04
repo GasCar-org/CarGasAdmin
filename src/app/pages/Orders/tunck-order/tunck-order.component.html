@@ -1,0 +1,352 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+  <nb-card-header>
+    ادارة طلبات الخزانات
+  </nb-card-header>
+  <nb-card-body>
+
+    <toaster-container [toasterconfig]="config"></toaster-container>
+    <input type='text' style='padding:8px;margin:15px auto;width:50%;'
+      placeholder='البحث عن اسم صاحب الطلب او رقم الجوال' (keydown)='updateFilter($event)' />
+    <ngx-datatable #myTable class="material custom-ngxtable expandable" [rows]="rows" (page)='setPage($event)'
+      [columnMode]="'force'" [sortType]="'multi'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="60"
+      [loadingIndicator]="isLoading" [scrollbarH]="false" [scrollbarV]="false" [virtualization]="false"
+      [reorderable]="true" [externalPaging]="true" [count]="page.totalElements" [offset]="page.pageNumber"
+      [limit]="page.size" (page)='setPage($event)'>
+
+      <ngx-datatable-row-detail [rowHeight]="100" #myDetailRow (toggle)="onDetailToggle($event)">
+        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label class="txt1" for="inputState">رقم الطلب</label>
+              <label class="txt2">{{row._id}}</label>
+            </div>
+            <div class="form-group col-md-8">
+              <label class="txt1" for="inputState"> العنوان</label>
+              <label class="txt2">{{row.addressDetails}}</label>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label class="txt1" for="inputState">سعر التوصيل</label>
+              <label class="txt2">{{row.deliveryCost}}</label>
+            </div>
+            <div class="form-group col-md-4">
+              <label class="txt1" for="inputState"> المجموع</label>
+              <label class="txt2">{{row.subTotal}}</label>
+            </div>
+            <div class="form-group col-md-4">
+              <label class="txt1" for="inputState">المجموع الكلي</label>
+              <label class="txt2">{{row.Total}}</label>
+            </div>
+
+            <!-- <div class="form-group col-md-4">
+                <label class="txt1" for="inputState"> اسم السائق</label>
+                <label class="txt2">{{row?.driver_id.name}}</label>
+              </div> -->
+          </div>
+        </ng-template>
+      </ngx-datatable-row-detail>
+
+      <ngx-datatable-column [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false"
+        [canAutoResize]="false">
+        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+          <a href="javascript:void(0)" [class.datatable-icon-left]="!expanded" [class.datatable-icon-down]="expanded"
+            title="Expand/Collapse Row" (click)="toggleExpandRow(row)">
+          </a>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [width]="200" [cellClass]="'tbl-overflow'" prop="user_id.full_name" name="الاسم">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <span>{{value}} </span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [width]="100" [cellClass]="'tbl-overflow'" prop="user_id.phone_number" name="رقم الجوال">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <span>{{value}} </span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [width]="50" prop="paymentType" name="الدفع">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <span [ngStyle]="{'color':value === 2 ? 'green' : 'green' }" *ngIf="value === 2">فيزا</span>
+          <span [ngStyle]="{'color':value === 1 ? 'red' : 'red' }" *ngIf="value === 1">كاش</span>
+          <span [ngStyle]="{'color':value === 3 ? 'orange' : 'orange' }" *ngIf="value === 3">نقاط</span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [width]="50" prop="Total" name="م.الكلي">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <span>{{value}} </span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [width]="60" prop="createAt" name="تاريخ الطلب">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <span>{{value | date:'hh:mm dd-MM-yyyy'}} </span>
+        </ng-template>
+      </ngx-datatable-column>
+
+
+      <ngx-datatable-column [width]="70" prop="StatusId" name="الحالة">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <span class="bg-gray" [ngStyle]="{'color':value == 1 ? 'orange' : 'orange' }" *ngIf="value == 1">
+            بانتظار السائق </span>
+          <span class="bg-gray" [ngStyle]="{'color':value == 2 ? 'green' : 'green' }" *ngIf="value == 2">
+            جاري التوصيل</span>
+          <span class="bg-gray" [ngStyle]="{'color':value == 3 ? 'gray' : 'gray' }" *ngIf="value == 3">تم التوصيل
+          </span>
+          <span class="bg-gray" [ngStyle]="{'color':value == 4 ? 'green' : 'green' }" *ngIf="value == 4">
+            تم استلام الزبون</span>
+          <span class="bg-gray" [ngStyle]="{'color':value == 5 ? 'red' : 'red' }" *ngIf="value == 5">تم الغاء الطلب من
+            الزبون
+          </span>
+          <span class="bg-gray" [ngStyle]="{'color':value == 6 ? 'red' : 'red' }" *ngIf="value == 6">
+            تم الغاء الطلب من السائق</span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [width]="80" class="overflow-no" name="الاجراءات">
+        <ng-template style="overflow: visible !important" let-value="value" let-row="row" ngx-datatable-cell-template>
+          <!-- 
+            <button md-icon-button class="custom-icon del-icon" (click)="openModal(contentCategory,value)">
+              تفاصيل الطلب
+            </button>
+            <br>
+            <button md-icon-button class="custom-icon del-icon" (click)="openModal2(contentDriver,value)">
+              اختر السائق
+            </button>
+            <a md-icon-button class="custom-icon del-icon" routerLink="/pages/order/customerMap/{{value._id}}" target="blank">
+              عرض على الخريطة
+            </a>
+            <br>
+            <button md-icon-button class="custom-icon del-icon" (click)="openModal3(contentStatus,value)">
+              تعديل حالة الطلب
+            </button>
+            <br>
+            <a md-icon-button class="custom-icon del-icon" routerLink="/pages/order/tracking/{{value._id}}" target="blank">
+              التتبع
+            </a>
+            <br> -->
+
+          <div class="btn-group" dropdown>
+            <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
+              aria-controls="dropdown-basic">
+              المزيد <span class="caret"></span>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+              <li role="menuitem">
+                <button md-icon-button class="dropdown-item" (click)="openModal(contentCategory,value)">
+                  تفاصيل الطلب
+                </button>
+              </li>
+              <li>
+                <button md-icon-button class="dropdown-item" (click)="openModal3(contentStatus,value)">
+                  تعديل حالة الطلب
+                </button>
+              </li>
+              <!-- <li>
+                  <button md-icon-button class="dropdown-item" (click)="openModal2(contentDriver,value)">
+                    اختر السائق
+                  </button>
+                </li>  -->
+              <li role="menuitem">
+                <a class="dropdown-item" routerLink="/pages/order/customerMap/{{value._id}}">موقع
+                  الزبون</a>
+              </li>
+              <!-- <li role="menuitem" *ngIf="value.driver_id">
+                  <a class="dropdown-item" routerLink="/pages/order/tracking/{{value._id}}" target="blank">التتبع</a>
+                </li> -->
+            </ul>
+          </div>
+
+          <!-- <button md-icon-button class="custom-icon" (click)="EditRow(value)">
+              <i class="fa fa-edit"></i>
+            </button> -->
+          <!-- <button md-icon-button class="custom-icon del-icon" (click)="openModal(contentCategory,value)">
+              <i class="fa fa-percentage"></i>
+            </button> -->
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+
+    <ng-template #contentCategory let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">تفاصيل الطلب</h4>
+        <button type="button" class="close" aria-label="Close" (click)="close(contentCategory)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #form="ngForm">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label class="txt1" for="inputState">رقم الطلب</label>
+              <label class="txt2" name="ـid" #ـid id="ـid">{{postData._id}}</label>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label class="txt1" for="inputState">الاسم</label>
+              <label class="txt2" name="full_name" #full_name id="full_name">{{postData.user_id.full_name}}</label>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="txt1" for="inputState">رقم الجوال</label>
+              <label class="txt2" name="phone_number" #phone_number
+                id="phone_number">{{postData.user_id.phone_number}}</label>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label class="txt1" for="inputState">العنوان</label>
+              <label class="txt2" name="addressDetails" #addressDetails
+                id="addressDetails">{{postData.addressDetails}}</label>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label class="txt1" for="inputState">طريقة الدفع</label>
+              <span class="txt2" [ngStyle]="{'color':postData.paymentType === 2 ? 'green' : 'green' }"
+                *ngIf="postData.paymentType === 2">فيزا</span>
+              <span class="txt2" [ngStyle]="{'color':postData.paymentType === 1 ? 'red' : 'red' }"
+                *ngIf="postData.paymentType === 1">كاش</span>
+              <span class="txt2" [ngStyle]="{'color':postData.paymentType === 3 ? 'orange' : 'orange' }"
+                *ngIf="postData.paymentType === 3">نقاط</span>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="txt1" for="inputState">الحالة</label>
+              <span class="bg-gray" [ngStyle]="{'color':postData.StatusId == 1 ? 'orange' : 'orange' }"
+                *ngIf="postData.StatusId == 1">
+                بانتظار السائق </span>
+              <span class="bg-gray" [ngStyle]="{'color':postData.StatusId == 2 ? 'green' : 'green' }"
+                *ngIf="postData.StatusId == 2">
+                تم استلام السائق وجاري التوصيل</span>
+              <span class="bg-gray" [ngStyle]="{'color':postData.StatusId == 3 ? 'gray' : 'gray' }"
+                *ngIf="postData.StatusId == 3">تم التوصيل
+              </span>
+              <span class="bg-gray" [ngStyle]="{'color':postData.StatusId == 4 ? 'green' : 'green' }"
+                *ngIf="postData.StatusId == 4">
+                تم استلام الزبون</span>
+              <span class="bg-gray" [ngStyle]="{'color':postData.StatusId == 5 ? 'red' : 'red' }"
+                *ngIf="postData.StatusId == 5">تم الغاء الطلب
+                من الزبون
+              </span>
+              <span class="bg-gray" [ngStyle]="{'color':postData.StatusId == 6 ? 'red' : 'red' }"
+                *ngIf="postData.StatusId == 6">
+                تم الغاء الطلب من السائق</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label class="txt1" for="inputState">تاريخ التوصيل</label>
+              <label class="txt2" name="delivery_date" id="delivery_date">{{postData.delivery_date | date:'hh:mm
+                  dd-MM-yyyy'}}</label>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="txt1" for="inputState">وقت التوصيل </label>
+              <label class="txt2" name="delivery_time" id="delivery_time">{{postData.delivery_time}}</label>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label class="txt1" for="inputState">قيمة التوصيل</label>
+              <label class="txt2" name="deliveryCost" id="deliveryCost">{{postData.deliveryCost}}</label>
+            </div>
+            <div class="form-group col-md-4">
+              <label class="txt1" for="inputState">المجموع</label>
+              <label class="txt2" name="subTotal" id="subTotal">{{postData.subTotal}}</label>
+            </div>
+            <div class="form-group col-md-4">
+              <label class="txt1" for="inputState">المجموع الكلي</label>
+              <label class="txt2" name="Total" id="Total">{{postData.Total}}</label>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label class="txt1" for="inputState">الملاحظات</label>
+              <label class="txt2" name="Notes" id="Notes">{{postData.Notes}}</label>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="inputState">المنتجات</label>
+              <ngx-datatable class="material" [rows]="rowsItems" [columnMode]="'force'" [sortType]="'multi'"
+                [headerHeight]="50" [footerHeight]="50" [rowHeight]="60" [loadingIndicator]="isLoading"
+                [scrollbarH]="false" [scrollbarV]="false" [virtualization]="false" [reorderable]="false">
+                <ngx-datatable-column prop="product_id.name" name="المنتج">
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    <span>{{value}} </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="qty" name="الكمية">
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    <span>{{value}} </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="price" name="السعر">
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    <span>{{value}} </span>
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+            </div>
+          </div>
+        </form>
+      </div>
+    </ng-template>
+    <!-- 
+    <ng-template #contentDriver let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">اختر السائق</h4>
+        <button type="button" class="close" aria-label="Close" (click)="close(contentCategory)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>اختر السائق</label>
+            <ng-select name="aa" [dropdownPosition]="'bottom'" class="form-control" [items]="drivers" bindLabel="name"
+              bindValue="_id" placeholder="اختر السائق" [(ngModel)]="selected_driver_id" #selectedcategoryid="ngModel"
+              (change)="SupplierChanging($event)" required>
+            </ng-select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="SaveOrderDriver(contentDriver)">ارسال الطلب</button>
+      </div>
+    </ng-template> -->
+
+    <ng-template #contentStatus let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">تعيل حالة الطلب</h4>
+        <button type="button" class="close" aria-label="Close" (click)="close(contentCategory)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>اختر الحالة</label>
+            <select name="categories" class="form-control" #status (change)="selectStatus($event.target.value)">
+              <option *ngFor='let c of cateogires' [value]="c.id">{{c.name}}</option>
+            </select>
+          </div>
+          <div class="form-group" *ngIf="status.value == 8 || status.value == 9">
+            <label>السبب</label>
+            <input type="text" placeholder="سبب الرفض" class="form-control" #_note="ngModel" [(ngModel)]="Notes"
+              [ngClass]="(_note.invalid && (_note.dirty || _note.touched))?'form-control form-control-danger':'form-control'"
+              name="_note" id="_note" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="SaveUpdateStatus(contentCategory)">حفظ المعلومات</button>
+      </div>
+    </ng-template>
+
+  </nb-card-body>
+</nb-card>

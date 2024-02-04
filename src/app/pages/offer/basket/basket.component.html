@@ -1,0 +1,12 @@
+<nb-card>
+  <nb-card-header>
+    ادارة السلات الجاهزة
+    <a style="float: left;" alt='اضافة سلة جديدة' class="btn btn-success btn-icon" routerLink="/pages/basket/addbasket">
+      <i class="nb-plus"></i>
+    </a>
+  </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="onUserRowSelect($event)"
+      (deleteConfirm)="onDeleteConfirm($event)"></ng2-smart-table>
+  </nb-card-body>
+</nb-card>

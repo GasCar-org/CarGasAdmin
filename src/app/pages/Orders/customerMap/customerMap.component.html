@@ -1,0 +1,43 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+  <nb-card-header>
+    <h3>موقع العميل على الخريطة</h3>
+    <br>
+    <div class="form-group">
+      <label class="txt1">رقم الطلب:</label>
+      <label class="txt2">{{postData?._id}}</label>
+    </div> 
+    <div class="form-group">
+      <label class="txt1">اسم العميل:</label>
+      <label class="txt2">{{postData?.user_id.full_name}}</label>
+    </div> 
+    <div class="form-group">
+      <label class="txt1">رقم الجوال:</label>
+      <label class="txt2">{{postData?.user_id.phone_number}}</label>
+    </div> 
+    <div class="form-group">
+      <label class="txt1">العنوان:</label>
+      <label class="txt2">{{postData?.addressDetails}}</label>
+    </div> 
+
+  </nb-card-header>
+  <nb-card-body>
+    <agm-map *ngIf="isVisible" [zoomControl]="true" [latitude]="lat" [longitude]="lng" [zoom]="zoom" [fullscreenControl]="true"
+      [fullscreenControlOptions]="true" [disableDefaultUI]="false" [zoomControl]="false">
+      <!-- <agm-direction [origin]="origin" [destination]="destination">
+        </agm-direction> -->
+
+      <agm-marker (markerClick)="clickedMarker(label)" [latitude]="lat" [longitude]="lng" [label]="label">
+        <agm-info-window>
+          <br>
+          <strong>رقم الطلب: {{postData._id}}</strong>
+          <br>
+          <strong>اسم العميل: {{postData.user_id.full_name}}</strong>
+          <br>
+          <strong>رقم الجوال: {{postData.user_id.phone_number}}</strong>
+          <br>
+          <strong>العنوان: {{postData.addressDetails}}</strong>
+        </agm-info-window>
+      </agm-marker>
+    </agm-map>
+  </nb-card-body>
+</nb-card>

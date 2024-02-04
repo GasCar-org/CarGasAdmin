@@ -1,0 +1,72 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+  <nb-card-header>
+    اضافة او تعديل الأصــناف
+  </nb-card-header>
+  <nb-card-body>
+    <toaster-container [toasterconfig]="config"></toaster-container>
+    <form #form="ngForm">
+      <!-- <div class="form-group">
+        <div class="input-group">
+            <input class="form-control" placeholder="End date" name="startdt"
+            [(ngModel)]="start" ngbDatepicker #startdt="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="startdt.toggle()" type="button">
+              <i class="fa fa-calendar" style="width: 0.85 rem; height: 0.5rem; cursor: pointer;"></i>
+            </button>
+          </div>
+        </div>
+      </div> -->
+      <div class="form-group">
+        <label>عنوان الصنف</label>
+        <div class="input-group">
+          <input type="text" #name="ngModel" [(ngModel)]="category.name" placeholder="ادخل عنوان الصنف" 
+          [ngClass]="(name.invalid && (name.dirty || name.touched))?'form-control form-control-danger':'form-control'"
+            name="name" id="name"  />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>صورة رمزية</label>
+        <div>
+          <div id="fileSelector">
+            <input type="file" #fileUpload  placeholder="ادخل عنوان الصنف" id="fileUpload" ng2FileSelect [uploader]="uploader"
+              [ngClass]="(fileUpload.invalid && (fileUpload.dirty || fileUpload.touched))?'form-control form-control-danger':'form-control'">
+          </div>
+          <div class="form-group">
+            <label>الصور</label>
+            <div>
+              <div class="row uploadList" *ngFor="let item of uploader.queue">
+                <div class="col-sm-4">{{item.file.name}}</div>
+                <div class="col-sm-4">
+                  <div class="progress">
+                    <div class="progress-bar bg-success" [ngStyle]="{'width':item.progress+'%'}"></div>
+                  </div>
+                </div>
+                <div class="col-sm-4" style="margin-top: -14px;">
+                  <button type="button" class="btn btn-danger" (click)="item.remove(); uploader?.clearQueue(); resetfile();">حذف</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="row" *ngIf="uploader?.queue?.length > 0">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button [disabled]="!form.valid && !isEdit" class="btn btn-success btn-round btn-demo" (click)="Save(category);">حفظ
+          المعلومات</button>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+
+<nb-card>
+  <nb-card-header>
+    ادارة الأصـــناف
+  </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="onUserRowSelect($event)" (deleteConfirm)="onDeleteConfirm($event)"></ng2-smart-table>
+  </nb-card-body>
+</nb-card>

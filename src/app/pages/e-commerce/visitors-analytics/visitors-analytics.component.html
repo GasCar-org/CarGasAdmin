@@ -1,0 +1,43 @@
+<nb-card size="medium">
+  <nb-card-header>
+    <div class="title">معدل التسجيل بالتطبيق</div>
+    <div class="sub-title"></div>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="chart-container">
+      <div class="chart-header">
+        <!-- <ngx-legend-chart [legendItems]="chartLegend"></ngx-legend-chart> -->
+        <ngx-charts-line-chart 
+        [view]="view"
+        class="chart-container"
+        [scheme]="colorScheme"
+        [schemeType]="schemeType"
+        [results]="data"
+        [animations]="true"
+        [legend]="false"
+        (legendLabelClick)="onLegendLabelClick($event)"
+        [gradient]="false"
+        [xAxis]="true"
+        [yAxis]="true"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [autoScale]="true"
+      
+        [timeline]="false"
+        [showGridLines]="true"
+        [curve]="curves['Basis']"
+        [rangeFillOpacity]="rangeFillOpacity"
+        [roundDomains]="false"
+        [tooltipDisabled]="false"
+        (select)="select($event)">
+      </ngx-charts-line-chart>
+      </div>
+    </div>
+  </nb-card-body>
+<!-- 
+  <ngx-slide-out [showVisitorsStatistics]="true">
+    <ngx-visitors-statistics></ngx-visitors-statistics>
+  </ngx-slide-out>
+</nb-card> -->

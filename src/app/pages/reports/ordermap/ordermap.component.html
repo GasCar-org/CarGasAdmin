@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+      <nb-card-header>بحث بحسب فترة</nb-card-header>
+      <nb-card-body>
+        <form #form="ngForm">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputPassword4">من تار يخ</label>
+              <div class="input-group">
+                <input  type="text" name="dt_from" id="dt_from" bsDatepicker readonly #dt_from [(ngModel)]="search.dt_from"
+                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" [ngClass]="(dt_from.invalid && dt_from.dirty || dt_from.touched)?'form-control form-control-danger':'form-control'" />
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputPassword4">الى تاريخ</label>
+              <div class="input-group">
+                <input  type="text" name="dt_to" id="dt_to" bsDatepicker readonly #dt_to [(ngModel)]="search.dt_to"
+                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" [ngClass]="(dt_to.invalid && dt_to.dirty || dt_to.touched)?'form-control form-control-danger':'form-control'" />
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <button class="btn btn-success btn-round btn-demo" (click)="Save(search)">بحث</button>
+            <button class="btn btn-danger btn-round btn-demo" (click)="reset()">تفريغ الحقول</button>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+  <nb-card-header>
+    <h3>التوزيع الجغرافي للطلبات</h3>
+    <br>
+  </nb-card-header>
+  <nb-card-body>
+    <agm-map *ngIf="isVisible" [zoomControl]="true" [latitude]="lat" [longitude]="lng" [zoom]="zoom"
+      [fullscreenControl]="true" [fullscreenControlOptions]="true" [disableDefaultUI]="false" [zoomControl]="false">
+      <!-- <agm-direction [origin]="origin" [destination]="destination">
+        </agm-direction> -->
+      <agm-marker *ngFor="let m of marker; let i = index" (markerClick)="clickedMarker(m.label, i)" [latitude]="m.lat"
+        [longitude]="m.lng">
+        <agm-info-window>
+          <br>
+          <strong>اسم العميل: {{m.user_id.full_name}}</strong>
+          <br>
+          <strong>رقم الجوال: {{m.user_id.phone_number}}</strong>
+          <br>
+        </agm-info-window>
+      </agm-marker>
+    </agm-map>
+  </nb-card-body>
+</nb-card>

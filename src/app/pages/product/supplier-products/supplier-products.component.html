@@ -1,0 +1,188 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+  <nb-card-header>
+    الشركات
+    <a style="float: left;" alt='اضافة منتج' class="btn btn-success btn-icon"
+      routerLink="/pages/product/addsupplierproducts">
+      <i class="nb-plus"></i>
+    </a>
+  </nb-card-header>
+  <nb-card-body>
+    <form #form="ngForm">
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label for="inputEmail4">اسم الشركة</label>
+          <ng-select [items]="suppliers" [virtualScroll]="true" [dropdownPosition]="'bottom'" bindLabel="name"
+            bindValue="ـid" placeholder="اختر الشركة" (change)="SupplierChange($event)"></ng-select>
+        </div>
+      </div>
+      <button [disabled]="!form.valid && !isEdit" class="btn btn-success btn-round btn-demo"
+        (click)="Search()">بحث</button>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<!-- <nb-card>
+  <nb-card-header>
+    منتجات الشركة
+  </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="onUserRowSelect($event)" (deleteConfirm)="onDeleteConfirm($event)"></ng2-smart-table>
+  </nb-card-body>
+</nb-card> -->
+
+
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+  <nb-card-header>
+    منتجات الشركة
+  </nb-card-header>
+  <nb-card-body>
+
+    <toaster-container [toasterconfig]="config"></toaster-container>
+    <input type='text' style='padding:8px;margin:15px auto;width:40%;' placeholder='البحث عن منتج'
+      (keydown)='updateFilter($event)' />
+    <ngx-datatable class="material" [rows]="rows" (page)='setPage($event)' [columnMode]="'force'" [sortType]="'multi'"
+      [headerHeight]="50" [footerHeight]="50" [rowHeight]="80" [loadingIndicator]="isLoading" [scrollbarH]="false"
+      [scrollbarV]="false" [virtualization]="false" [reorderable]="false" [externalPaging]="true"
+      [count]="page.totalElements" [offset]="page.pageNumber" [limit]="page.size" (page)='setPage($event)'>
+
+      <ngx-datatable-column prop="product_id.image" name="الصورة">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <img src="{{value}}" class="img-corner" width="48" height="48" />
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column prop="product_id.name" name="الاسم">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <span>{{value}} </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column prop="qty" name="الكمية">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <span>{{value}} </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column prop="prices" name="الأسعار">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <span>
+            <span *ngFor="let c of value">
+              {{c.buy_unit_name}}: {{c.price}} ريال
+            </span>
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="الاجراءات">
+        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+          <button md-icon-button class="custom-icon" (click)="EditRow(value)">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button md-icon-button class="custom-icon del-icon" (click)="onDeleteConfirm(value)">
+            <i class="fa fa-trash"></i>
+          </button>
+          <button md-icon-button class="custom-icon info-icon" (click)="openModal(contentCategory,value)">
+            <i class="fa fa-percentage"></i>
+          </button>
+        </ng-template>
+      </ngx-datatable-column>
+
+    </ngx-datatable>
+
+
+
+    <ng-template #contentCategory let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">اضافة خصم</h4>
+        <button type="button" class="close" aria-label="Close" (click)="close(contentCategory)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #form="ngForm">
+          <div class="form-group">
+            <nb-checkbox status="success" name="isOffer" #isOfferPressent id="isOffer" [(ngModel)]="postData.isOffer"
+              class="col-sm-3">عرض المنتج ضمن العروض؟</nb-checkbox>
+          </div>
+          <div class="form-row" *ngIf="postData.isOffer">
+            <div class="form-group col-md-6">
+              <label for="inputState">من تاريخ</label>
+              <input type="text" name="dt_begin" id="dt_begin" bsDatepicker readonly class="form-control" #dt_begin
+                [(ngModel)]="postData.dt_begin" required [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                [ngClass]="(dt_begin.invalid && dt_begin.dirty || dt_begin.touched)?'form-control form-control-danger':'form-control'" />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputState">الى تاريخ</label>
+              <input type="text" name="dt_end" id="dt_end" bsDatepicker readonly class="form-control" #dt_end
+                [(ngModel)]="postData.dt_end" required [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                [ngClass]="(dt_end.invalid && dt_end.dirty || dt_end.touched)?'form-control form-control-danger':'form-control'" />
+            </div>
+          </div>
+          <div class="form-row" *ngIf="postData.isOffer">
+            <label for="inputState">نسبة الخصم</label>
+            <input type="number" min="0.10" name="discount_rate" id="discount_rate" class="form-control" #discount_rate
+              [(ngModel)]="postData.discount_rate" required
+              [ngClass]=" (discount_rate.invalid && (discount_rate.dirty || discount_rate.touched))?'form-control form-control-danger':'form-control'" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" [disabled]="!form.valid || !postData.isOffer || postData.discount_rate == 0"
+          class="btn btn-primary" (click)="SaveUpdateCategory(contentCategory)">حفظ المعلومات</button>
+        <button type="button" [disabled]="!isEdit" class="btn btn-danger" (click)="delete(contentCategory)">حذف
+          الخصم</button>
+      </div>
+    </ng-template>
+
+    <!-- 
+    <div class="col-md-3" style="padding: 0;">
+        <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="ابحث باسم المنتج">
+          </mat-form-field>      
+    </div>
+ 
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+    
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef >الصورة</th>
+        <td mat-cell *matCellDef="let element">
+            <img width='70px' height='70px' style="border-radius: 50%;" src="{{element.product_id.image}}" /></td>
+      </ng-container>
+    
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef  >الاسم</th>
+        <td mat-cell *matCellDef="let element"> {{element.product_id.name}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="qty">
+        <th mat-header-cell *matHeaderCellDef>الكمية </th>
+        <td mat-cell *matCellDef="let element"> {{element.qty}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="prices">
+          <th mat-header-cell *matHeaderCellDef>الأسعار </th>
+          <td mat-cell *matCellDef="let element">
+            <span *ngFor="let c of element.prices">
+              {{c.buy_unit_name}}: {{c.price}} ريال
+            </span>
+           </td>
+        </ng-container>
+
+        <ng-container matColumnDef="options">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element; let i = index;">
+                <button class="custom-icon del-icon" (click)="deleteRow(element._id,i)">
+                    <i  class="nb-trash"></i>
+                </button>
+                <button class="custom-icon" (click)="EditRow(element._id)">
+                    <i  class="nb-edit"></i>
+                </button>
+             </td>
+          </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </mat-table>
+
+    <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" [length]="totalSize"
+        [pageIndex]="currentPage" (page)="handlePage($event)">
+    </mat-paginator> -->
+
+  </nb-card-body>
+</nb-card>

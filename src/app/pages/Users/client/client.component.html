@@ -1,0 +1,42 @@
+<nb-card>
+  <nb-card-header>
+    ادارة المستخدمين
+  </nb-card-header>
+  <nb-card-body>
+    <toaster-container [toasterconfig]="config"></toaster-container>
+    <input type='text' style='padding:8px;margin:15px auto;width:40%;' placeholder='البحث عن مستخدم باستخدام رقم الجوال او الاسم'
+      (keydown)='updateFilter($event)' />
+    <ngx-datatable class="material" [rows]="rows" [columnMode]="'force'" [sortType]="'multi'" [headerHeight]="50"
+      [footerHeight]="50" [rowHeight]="60" [loadingIndicator]="isLoading" [scrollbarH]="false" [scrollbarV]="false"
+      [virtualization]="false" [reorderable]="false" [externalPaging]="true" [count]="page.totalElements" [offset]="page.pageNumber"
+      [limit]="page.size" [rowClass]="getRowClass" (page)='setPage($event)'>
+
+      <ngx-datatable-column prop="image" name="الصورة">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <img src="{{value}}" class="img-corner" width="48" height="48" />
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column prop="full_name" name="الاسم بالكامل"></ngx-datatable-column>
+      <ngx-datatable-column prop="phone_number" name="رقم الجوال"></ngx-datatable-column>
+      <ngx-datatable-column prop="city" name="المدينة"></ngx-datatable-column>
+      <ngx-datatable-column prop="address" name="العنوان"></ngx-datatable-column>
+      <ngx-datatable-column prop="createAt" name="تاريخ التسجيل">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <strong>{{value | date: 'dd-MM-yyyy'}}</strong>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="الاجراءات">
+        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+          <!-- <button md-icon-button class="custom-icon info-icon" (click)="onCheckProfile(value)">
+            <i class="fa fa-user"></i>
+          </button> -->
+          <button md-icon-button class="custom-icon del-icon" (click)="onDeleteConfirm(value)">
+            <i class="fa fa-ban"></i>
+          </button>
+
+        </ng-template>
+      </ngx-datatable-column>
+
+    </ngx-datatable>
+  </nb-card-body>
+</nb-card>

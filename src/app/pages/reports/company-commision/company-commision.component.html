@@ -1,0 +1,75 @@
+<nb-card>
+  <nb-card-header>
+    العمولات المستحقة
+    <!-- <button style="float: left;" class="btn btn-hero-info btn-demo" (click)="ExportExcel()">
+      <i class="fas fa-file-excel"></i> اكسل
+    </button> -->
+    <!-- <button style="margin-left: 10px;float: left;" class="btn btn-hero-primary btn-demo">
+      <i class="fas fa-print"></i> طباعة
+    </button> -->
+  </nb-card-header>
+  <nb-card-body>
+    <toaster-container [toasterconfig]="config"></toaster-container>
+    <ngx-datatable #myTable class="material custom-ngxtable expandable" [rows]="rows" [columnMode]="'force'"
+      [sortType]="'multi'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="60" [loadingIndicator]="isLoading"
+      [scrollbarH]="false" [scrollbarV]="false" [virtualization]="false" [reorderable]="false" [externalPaging]="true"
+      [count]="page.totalElements" [offset]="page.pageNumber" [limit]="page.size" (page)='setPage($event)'>
+
+      <ngx-datatable-column [width]="130" [cellClass]="'tbl-overflow'" prop="supplier_id.name" name="الشركة">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <span>{{value}} </span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [width]="100" [cellClass]="'tbl-overflow'" prop="value" name="المستحق">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <span>{{value}} </span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [width]="100" [cellClass]="'tbl-overflow'" prop="totalPay" name="المدفوع">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <span>{{value}} </span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [width]="100" prop="last_date_pay" name="اخر دفعة">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <span>{{value}} </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column [width]="80" class="overflow-no" name="الاجراءات">
+        <ng-template style="overflow: visible !important" let-value="value" let-row="row" ngx-datatable-cell-template>
+          <div class="btn-group" dropdown>
+            <button id="button-basic" (click)="openModal(contentCategory,value)" type="button" class="btn btn-primary"
+              aria-controls="dropdown-basic">
+              تسديد <span class="caret"></span>
+            </button>
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+    <ng-template #contentCategory let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">تسديد العمولات</h4>
+        <button type="button" class="close" aria-label="Close" (click)="close(contentCategory)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>القيمة</label>
+            <input type="number" min="1" placeholder="ادخل القيمة من فضلك" class="form-control" #_note="ngModel"
+              [(ngModel)]="val"
+              [ngClass]="(_note.invalid && (_note.dirty || _note.touched))?'form-control form-control-danger':'form-control'"
+              name="_note" id="_note" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="SaveUpdateStatus(contentCategory)">حفظ</button>
+      </div>
+    </ng-template>
+  </nb-card-body>
+</nb-card>

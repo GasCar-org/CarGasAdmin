@@ -1,0 +1,25 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+  <nb-card-header>اختر السائق</nb-card-header>
+  <nb-card-body>
+    <div class="form-row">
+      <ng-select name="aa" [dropdownPosition]="'bottom'" class="form-control" [items]="drivers" bindLabel="name" bindValue="_id" placeholder="اختر السائق"
+        [(ngModel)]="selected_driver_id" #selectedcategoryid="ngModel" (change)="SupplierChanging($event)" required>
+      </ng-select>
+    </div>
+    <div class="row">
+      <div class="chat-container col-md-12 col-lg-12 col-xxxl-12">
+        <nb-chat title="المحادثة الفورية مع السائقين" size="large" status="success">
+          <nb-chat-message *ngFor="let msg of messages" 
+            [type]="msg.type" 
+            [message]="msg.text" 
+            [reply]="msg.reply"
+            [sender]="msg.User.User" 
+            [quote]="msg.quote">
+          </nb-chat-message>
+          <nb-chat-form (send)="sendMessage($event)" [dropFiles]="false">
+          </nb-chat-form>
+        </nb-chat>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

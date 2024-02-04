@@ -1,0 +1,54 @@
+<nb-card size="large">
+  <nb-tabset fullWidth (changeTab)="changeTab($event)">
+    <nb-tab tabTitle="الطلبات">
+      <div class="chart-container">
+        <ngx-chart-panel-summary [summary]="chartPanelSummary"></ngx-chart-panel-summary>
+        <ngx-charts-bar-vertical-2d
+        class="chart-container"
+        [view]="view2"
+        [scheme]="colorScheme2"
+        [schemeType]="schemeType2"
+        [results]="single2"
+        [animations]="true"
+        [gradient]="false"
+        [xAxis]="true"
+        [yAxis]="true"
+        [legend]="true"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [tooltipDisabled]="false"
+        [xAxisLabel]="'السائق'"
+        [yAxisLabel]="'المجموع'"
+        (legendLabelClick)="onLegendLabelClick2($event)"
+        [showGridLines]="true"
+        [barPadding]="8"
+        [groupPadding]="16"
+        [roundDomains]="false"
+        [roundEdges]="true"
+        [yScaleMax]="yScaleMax"
+        (select)="select2($event)">
+      </ngx-charts-bar-vertical-2d>
+      </div>
+    </nb-tab>
+    <nb-tab tabTitle="الأرباح" [lazyLoad]="true">
+      <div class="chart-container">
+          <ngx-chart-panel-summary [summary]="chartPanelSummary"></ngx-chart-panel-summary>
+
+          <ngx-charts-bar-vertical class="chart-container" [view]="view" [scheme]="colorScheme" [schemeType]="schemeType"
+          [results]="single" [animations]="true" [gradient]="false" [xAxis]="true"
+          [yAxis]="true" [legend]="true" [legendTitle]="'المعرف'" [showXAxisLabel]="true" [showYAxisLabel]="true"
+          [tooltipDisabled]="false" [xAxisLabel]="'الشهور'" [yAxisLabel]="'الأرباح'" [showGridLines]="true" [barPadding]="8"
+          [roundDomains]="false" (select)="select($event)" (legendLabelClick)="onLegendLabelClick($event)">
+          <!-- <ng-template #tooltipTemplate let-model="model">
+            <h1>
+              {{getFlag(model.name)}}
+            </h1>
+            <h2>{{model.name}}: {{model.value}}</h2>
+          </ng-template> -->
+        </ngx-charts-bar-vertical>
+
+      
+      </div>
+    </nb-tab>
+  </nb-tabset>
+</nb-card>

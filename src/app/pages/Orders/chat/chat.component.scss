@@ -1,0 +1,39 @@
+
+
+nb-layout-column {
+    justify-content: center;
+    display: flex;
+  }
+
+  nb-chat {
+    margin: 3rem auto 0;
+    width: 100%;
+  }
+
+  .chat-container {
+    margin-bottom: 2rem;
+    font-size: nb-theme(font-size-xlg);
+
+    li {
+      padding-top: 1rem;
+    }
+  }
+
+  .chart-description {
+    font-size: nb-theme(font-size-xlg);
+    text-align: center;
+    margin: 0 auto;
+    width: 52%;
+  }
+
+  .chart-features {
+    margin-top: 2.75rem;
+  }
+  nb-chat {
+    width: 100%;
+  }
+
+.chart-description {
+    width: 90%;
+}
+  

@@ -1,0 +1,73 @@
+<nb-layout>
+  <nb-layout-column>
+    <nb-card>
+      <nb-card-body>
+        <div class="col-xl-4 col-lg-6 col-md-8 col-sm-12">
+          <nb-auth-block>
+            <h2 class="title">تسجيل الدخول</h2>
+            <small class="form-text sub-title">أهلا بكم في لوحة تحكم تطبيق الغاز</small>
+            <form (ngSubmit)="login()" #form="ngForm" autocomplete="nope">
+              <div *ngIf="showMessages.error && errors && errors.length > 0 && !submitted" class="alert alert-danger"
+                role="alert">
+                <div><strong>الاخطاء</strong></div>
+                <div *ngFor="let error of errors">{{ error }}</div>
+              </div>
+              <div *ngIf="showMessages.success && messages && messages.length > 0 && !submitted" class="alert alert-success"
+                role="alert">
+                <div><strong>نجاح</strong></div>
+                <div *ngFor="let message of messages">{{ message }}</div>
+              </div>
+              <div class="form-group">
+                <label for="input-email" class="sr-only">البريد الالكتروني</label>
+                <input name="email" [(ngModel)]="User.email" id="input-email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="form-control"
+                  placeholder="البريد الالكتروني" #email="ngModel" [class.form-control-danger]="email.invalid && email.touched"
+                  autofocus [required]="getConfigValue('forms.validation.email.required')">
+                <small class="form-text error" *ngIf="email.invalid && email.touched && email.errors?.required">
+                  البريد الالكتروني مطلوب
+                </small>
+                <small class="form-text error" *ngIf="email.invalid && email.touched && !email.errors?.pattern">
+                  يجب ادخال بريد الكتورني حقيقي او صالح
+                </small>
+              </div>
+              <div class="form-group">
+                <label for="input-password" class="sr-only">كلمة المرور</label>
+                <input name="password" [(ngModel)]="User.password" type="password" id="input-password" class="form-control"
+                  placeholder="كلمة المرور" #password="ngModel" [class.form-control-danger]="password.invalid && password.touched"
+                  [required]="getConfigValue('forms.validation.password.required')" [minlength]="getConfigValue('forms.validation.password.minLength')"
+                  [maxlength]="getConfigValue('forms.validation.password.maxLength')">
+                <small class="form-text error" *ngIf="password.invalid && password.touched && password.errors?.required">
+                  كلمة المرور مطلوبة
+                </small>
+                <small class="form-text error" *ngIf="password.invalid && password.touched && (password.errors?.minlength || password.errors?.maxlength)">
+                  كلمة المرور يجب ان تحتوي على
+                  من {{ getConfigValue('forms.validation.password.minLength') }}
+                  الى {{ getConfigValue('forms.validation.password.maxLength') }}
+                  حروف او ارقام
+                </small>
+              </div>
+              <!-- <div class="form-group accept-group col-sm-12">
+                <nb-checkbox name="rememberMe" [(ngModel)]="user.rememberMe">Remember me</nb-checkbox>
+                <a class="forgot-password" routerLink="../request-password">Forgot Password?</a>
+              </div> -->
+              <button [disabled]="submitted || !form.valid" class="btn btn-block btn-hero-success" [class.btn-pulse]="submitted">
+                تسجيل الدخول
+              </button>
+            </form>
+             <div class="links">
+              <small class="form-text">ابق على تواصل معنا</small>
+              <div class="socials">
+                <a href="https://www.instagram.com/techno2030com/" target="_blank" class="ion ion-social-instagram"></a>
+                <a href="https://www.facebook.com/tech.riyadea" target="_blank" class="ion ion-social-facebook"></a>
+                <a href="https://twitter.com/techno2030com/status/1030186200781479936?s=19" target="_blank" class="ion ion-social-twitter"></a>
+                <a href="https://www.linkedin.com/in/abdulaziz-aljuhani-0545500488/" target="_blank" class="ion ion-social-linkedin"></a>
+              </div>
+              <!-- <small class="form-text">
+                Don't have an account? <a routerLink="../register"><strong>Sign Up</strong></a>
+              </small> -->
+            </div> 
+          </nb-auth-block>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

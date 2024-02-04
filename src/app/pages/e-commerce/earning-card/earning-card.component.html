@@ -1,0 +1,61 @@
+<nb-flip-card class='flip-noreverse' [showToggleButton]="false" [flipped]="flipped">
+  <nb-card-front>
+    <nb-card>
+      <nb-card-header class='custom-title'>
+        <span>اكثر المنتجات طلبا</span>
+        <!-- <i class="nb-arrow nb-arrow-left" (click)="toggleFlipView()"></i> -->
+      </nb-card-header>
+      <nb-card-body>
+        <ngx-charts-advanced-pie-chart class="chart-container" [view]="view" [scheme]="colorScheme" [results]="single"
+          [animations]="true"  [gradient]="true"
+          [tooltipDisabled]="false" [tooltipText]="pieTooltipText">
+        </ngx-charts-advanced-pie-chart>
+      </nb-card-body>
+    </nb-card>
+  </nb-card-front>
+  <!-- <nb-card-back>
+      <nb-card>
+        <nb-card-header class='custom-title'>
+            <span class='txt'>اكثر الشركات طلبا</span>
+            <i class="nb-arrow nb-arrow-left" (click)="toggleFlipView()"></i>
+          </nb-card-header>
+        <nb-card-body>
+            <ngx-charts-advanced-pie-chart class="chart-container" [view]="view2" [scheme]="colorScheme2" [results]="single2"
+          [animations]="true" (legendLabelClick)="onLegendLabelClick2($event)" [gradient]="true" [tooltipDisabled]="false"
+          [tooltipText]="pieTooltipText2" (select)="select2($event)">
+        </ngx-charts-advanced-pie-chart>
+        </nb-card-body>
+      </nb-card>
+    </nb-card-back> -->
+</nb-flip-card>
+
+<!-- <nb-flip-card [showToggleButton]="false" [flipped]="flipped">
+  <nb-card-front>
+    <nb-card>
+      <nb-card-header class='custom-title'>
+          <span>اكثر المنتجات طلبا</span>
+          <i class="nb-arrow-left" (click)="toggleFlipView()"></i>
+      </nb-card-header>
+      <nb-card-body>
+        <ngx-charts-advanced-pie-chart class="chart-container" [view]="view" [scheme]="colorScheme" [results]="single"
+          [animations]="true" (legendLabelClick)="onLegendLabelClick($event)" [gradient]="true" [tooltipDisabled]="false"
+          [tooltipText]="pieTooltipText" (select)="select($event)">
+        </ngx-charts-advanced-pie-chart>
+      </nb-card-body>
+    </nb-card>
+  </nb-card-front>
+  <nb-card-back>
+    <nb-card>
+      <nb-card-header>
+        اكثر الشركةات طلبا
+      </nb-card-header>
+      <nb-card-body>
+        <ngx-charts-advanced-pie-chart class="chart-container" [view]="view2" [scheme]="colorScheme2" [results]="single2"
+          [animations]="true" (legendLabelClick)="onLegendLabelClick2($event)" [gradient]="true" [tooltipDisabled]="false"
+          [tooltipText]="pieTooltipText2" (select)="select2($event)">
+        </ngx-charts-advanced-pie-chart>
+        <i class="nb-arrow-left" (click)="toggleFlipView()"></i>
+      </nb-card-body>
+    </nb-card>
+  </nb-card-back>
+</nb-flip-card> -->

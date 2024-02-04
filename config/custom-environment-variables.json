@@ -1,0 +1,5 @@
+{
+    "jwtPrivateKey": "liken_jwtPrivateKey",
+    "db": "db_liken" 
+
+}

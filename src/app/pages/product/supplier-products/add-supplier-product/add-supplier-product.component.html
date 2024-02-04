@@ -1,0 +1,68 @@
+<nb-card>
+  <nb-card-header>اضافة او تعديل منتجات الشركة</nb-card-header>
+  <nb-card-body>
+    <toaster-container [toasterconfig]="config"></toaster-container>
+    <form [formGroup]="myForm" (ngSubmit)="Save()">
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label for="inputEmail4">اسم الشركة</label>
+          <ng-select required formControlName="supplier_id" [dropdownPosition]="'bottom'"  [items]="suppliers" [virtualScroll]="true" bindLabel="name"
+            placeholder="اختر الشركة"></ng-select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputPassword4">التصنيف</label>
+          <ng-select required formControlName="category_id" [dropdownPosition]="'bottom'"  [items]="categories" [virtualScroll]="true" bindLabel="name"
+            placeholder="اختر التصنيف" (change)="selectCategory($event)"></ng-select>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputPassword4">التصنيف الفرعي</label>
+          <ng-select required formControlName="sub_category_id" [dropdownPosition]="'bottom'"  [items]="sub_categories" [virtualScroll]="true"
+            bindLabel="name" placeholder="اختر التصنيف الفرعي"  (change)="selectSubCategory($event)"></ng-select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label for="inputPassword4">المنتج</label>
+          <ng-select required formControlName="product_id" [dropdownPosition]="'bottom'"  [items]="products" [virtualScroll]="true" bindLabel="name"
+            placeholder="اختر المنتج"></ng-select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputCity">الكمية المتوفرة</label>
+          <input type="number" min=1 placeholder="الكمية المتوفرة" formControlName="qty" [(ngModel)]="model.qty" class="form-control"
+            name="qty" id="qty" required [ngClass]="(myForm.get('qty').invalid && (myForm.get('qty').dirty || myForm.get('qty').touched))?'form-control form-control-danger':'form-control'" />
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputState">تاريخ الانتهاء</label>
+          <input type="text" id="dt_end" bsDatepicker readonly class="form-control" formControlName="dt_end"
+            [(ngModel)]="model.dt_end" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" 
+             [ngClass]="(myForm.get('dt_end').invalid && (myForm.get('dt_end').dirty || myForm.get('dt_end').touched))?'form-control form-control-danger':'form-control'" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputPassword4">وحــدات الشراء والأسعـار</label>
+          <div class="row demo-checkboxes-radio">
+            <div class="col">
+                <!-- *ngFor="let item of myForm.get('prices').controls; -->
+              <div class="demo-checkboxes col" formArrayName="prices" *ngFor="let item of getPrices.controls; let i = index;">
+                <div class="row" [formGroupName]="i">
+                  <input type="hidden" formControlName="buy_unit_id" />
+                  <input type="hidden" formControlName="buy_unit_name" />
+                  <nb-checkbox status="success" [value]="getTrue(buyUnitsName[i]._id)" #checkbox (change)="onChangeCheck($event,i)"
+                    class="col-sm-5">{{buyUnitsName[i].name}}</nb-checkbox>
+                  <input formControlName="price" type="number" [ngModel]="getPrice(buyUnitsName[i]._id)" min=0 class="form-control col-sm-7" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- [disabled]="!form.valid && !isEdit && supplier_product.prices.length === 0" -->
+      <button [disabled]="!myForm.valid" class="btn btn-success btn-round btn-demo" type="submit">حفظ المعلومات</button>
+    </form>
+  </nb-card-body>
+</nb-card>

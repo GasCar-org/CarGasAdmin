@@ -1,0 +1,94 @@
+<nb-card>
+  <nb-card-header>
+    <span>البحث</span>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row">
+    <div class="form-group col-md-3">
+      <label>اختر السائق</label>
+      <select  class="form-control" [(ngModel)]="time" name="time1" id="time1" tabindex="1" #time1="ngModel">
+        <!-- <option value="">اختر الفترة</option> -->
+        <option value="day">هذا اليوم</option>
+        <option value="week">اخر 7 أيام</option>
+        <option value="month">اخر شهر</option>
+        <option value="period">فترة محددة</option>
+      </select>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="inputState">من تاريخ</label>
+      <input type="text" name="start_date1" id="start_date1" #start_date1="ngModel" bsDatepicker readonly class="form-control" #dt_begin
+        [(ngModel)]="start_date"  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"/>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="inputState">الى تاريخ</label>
+      <input type="text" name="end_date1" id="end_date1" #end_date1="ngModel" bsDatepicker readonly class="form-control" #dt_end
+        [(ngModel)]="end_date"  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+        />
+    </div>
+    <div class="form-group col-md-3 mt-2">
+      <br>
+      <button type="button"  class="btn btn-primary" (click)="ApplyFilter()">بحث</button>&nbsp;
+      <button type="button"  class="btn btn-danger" (click)="reset()">تفريغ</button>
+    </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+<div class="row">
+  <div class="col-xxl-12">
+    <div class="row">
+      <div class="col-md-12">
+        <ngx-profit-card [filter]="search_filter"></ngx-profit-card>
+      </div>
+      <div class="col-md-12">
+        <ngx-earning-card [filter]="search_filter"></ngx-earning-card>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-xxl-12">
+    <ngx-ecommerce-charts [filter]="search_filter"></ngx-ecommerce-charts>
+  </div>
+</div>
+
+<div class="row">
+  <!-- <div class="col-xxl-12">
+    <ngx-country-orders></ngx-country-orders>
+  </div> -->
+
+  <div class="col-xxl-12">
+    <ngx-progress-section></ngx-progress-section>
+  </div>
+</div>
+
+<div class="row">
+  <!-- <div class="col-xxl-12">
+    <ngx-ecommerce-visitors-analytics></ngx-ecommerce-visitors-analytics>
+  </div> -->
+
+  <!-- <div class="col-xxl-12">
+    <nb-card size="medium">
+      <nb-card-header>
+        <div class="title">معدل الطلبات المنجزة من نعناع شهريا</div>
+        <div class="sub-title"></div>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="chart-container">
+          <div class="chart-header">
+            <ngx-charts-line-chart class="chart-container" [scheme]="colorScheme2" [schemeType]="schemeType2"
+              [results]="single3" [animations]="true" [legend]="false" [gradient]="false" [xAxis]="true" [yAxis]="true"
+              [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'الشهر'" [yAxisLabel]="'الطلبات'"
+              [autoScale]="true" [timeline]="false" [showGridLines]="true" [curve]="curves['Basis']"
+              [rangeFillOpacity]="rangeFillOpacity" [roundDomains]="false" [tooltipDisabled]="false"
+              [tooltipDisabled]="false">
+            </ngx-charts-line-chart>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div> -->
+
+  <div class="col-xxl-12">
+    <ngx-user-activity></ngx-user-activity>
+  </div>
+</div>
